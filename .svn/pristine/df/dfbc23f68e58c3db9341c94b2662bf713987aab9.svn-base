@@ -1,0 +1,72 @@
+//**********************************************************
+//Assignment3:
+//UTORID user_name: gerovac1
+//
+//Author: Jorden Gerovac
+//
+//
+//Honor Code: I pledge that this program represents my own
+//program code and that I have coded on my own. I received
+//help from no one in designing and debugging my program.
+//*********************************************************
+package driver;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Formatter {
+  public static String format;
+  public static String outputFile;
+  public static void main(String[] args){
+    int totalCoAuthors = 0;
+    ArrayList<String> a = new ArrayList<String>();
+    // assigning the output file to a variable
+    outputFile = args[1];
+    // ConsoleOutput instance that will print out the format
+    ConsoleOutput c = new ConsoleOutput();
+    // FileOutput instance that will write the format to a file
+    FileOutput f = new FileOutput();
+    // Extractor instance that will obtain google scholar information
+    Extractor e = new Extractor();
+    String inputFiles[] = args[0].split(",");
+    // the String format
+    for (String inputFile: inputFiles){
+    format = "1. Name of Author:\n     "
+        + e.extractAuthorsName(inputFile) + "\n" 
+        + "2. Number of Citations:\n     "
+        + e.extractNumberOfCitations(inputFile) + "\n" + 
+        "3. Number of i-10 index after 2009:\n     " + 
+        e.extractNumberOfi10Index(inputFile) + "\n" +
+        "4. Title of the first three publications:\n     " 
+        + e.extractFirstThreePublications(inputFile) + "\n" + 
+        "5. Total paper citation (first five papers):\n     " + 
+        e.extractTotalCitations(inputFile) + "\n" + 
+        "6. Total Co-Authors:\n     " + e.extractCoAuthors(inputFile) + "\n" + 
+        "------------------------------------------------------";
+    // printing to console
+    c.consume();
+    // writing to file
+    f.consume();
+    totalCoAuthors += e.extractCoAuthors(inputFile);
+    }
+    format = "7. Co-Author list sorted (Total: " + totalCoAuthors + ")\n";
+    for (String inputFile: inputFiles){
+      // still need to sort
+      a.addAll(e.extractCoAuthorList(inputFile));
+    }
+    Collections.sort(a);
+    for (int i = 0; i<a.size(); i++){
+      format += a.get(i) + "\n";
+    }
+    c.consume();
+    f.consume();
+  }
+  // format getter method
+  public String getFormat(){
+    return format;
+  }
+  // output file getter method
+  public String getOutputFile(){
+    return outputFile;
+  }
+}

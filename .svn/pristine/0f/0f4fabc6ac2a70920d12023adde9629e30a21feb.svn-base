@@ -1,0 +1,22 @@
+package test;
+
+import static org.junit.Assert.*;
+
+import org.junit.*;
+
+import driver.Formatter;
+
+public class FormatterTest {
+  Formatter f;
+
+  @Before
+  public void setUp(){
+    f = new Formatter();
+    Formatter.format = "format";
+  }
+  @Test
+  public void getFormatTest() {
+    assertEquals(f.getFormat(), "format");
+  }
+
+}

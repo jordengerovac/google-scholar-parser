@@ -1,0 +1,155 @@
+//**********************************************************
+//Assignment3:
+//UTORID user_name: gerovac1
+//
+//Author: Jorden Gerovac
+//
+//
+//Honor Code: I pledge that this program represents my own
+//program code and that I have coded on my own. I received
+//help from no one in designing and debugging my program.
+//*********************************************************
+package driver;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Extractor extends HTML{
+  public String extractAuthorsName(String googleScholarURL) {
+    String matches = "";
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+
+      String reForAuthorExtraction =
+          "<span id=\"cit-name-display\" "
+              + "class=\"cit-in-place-nohover\">(.*?)</span>";
+      Pattern patternObject = Pattern.compile(reForAuthorExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      while (matcherObject.find()) {
+         matches = matcherObject.group(1);
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+  
+  public String extractNumberOfCitations(String googleScholarURL) {
+    String matches = "";
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+
+      String reForCitationExtraction = "<td class=\"cit-borderleft cit-data\"" +
+      ">(.*?)</td>";
+      Pattern patternObject = Pattern.compile(reForCitationExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      if (matcherObject.find()) {
+        matches = matcherObject.group(1);
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+  
+  public String extractNumberOfi10Index(String googleScholarURL) {
+    String matches = "";
+    int count = 0;
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+
+      String reFori10Extraction = "<td class=\"cit-borderleft cit-data\"" + 
+      ">(.*?)</td>";
+      Pattern patternObject = Pattern.compile(reFori10Extraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      while (matcherObject.find()) {
+        if (count==5){
+          matches = matcherObject.group(1);
+        }
+        count++;
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+  
+  public String extractFirstThreePublications(String googleScholarURL) {
+    String matches = "";
+    int count = 0;
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+
+      String reForPublicationExtraction = 
+          "<a href=\"http://scholar.google.ca/citations(.)view_op=view_citation&hl=en&user=oSJgw2cAAAAJ&citation_for_view=oSJgw2cAAAAJ:u5HHmVD_uO8C\" class=\"cit-dark-large-link\">(.*?)</a>";
+      Pattern patternObject = Pattern.compile(reForPublicationExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      if (matcherObject.find()) {
+        matches = matcherObject.group(1);
+        /*if (count<3){
+          matches[count] = matcherObject.group(1);
+        }
+        count++;*/
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+  
+  public String extractTotalCitations(String googleScholarURL) {
+    String matches = "";
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+
+      String reForCitationExtraction = "<a class=\"cit-dark-link\" href=" +
+      "\"http://scholar.google.ca/scholar(.)oi=bibs&hl=en&cites=(.*?)\">" + 
+          "(.*?)</a>";
+      Pattern patternObject = Pattern.compile(reForCitationExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      if (matcherObject.find()) {
+        matches = matcherObject.group(1);
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+  
+  public String extractCoAuthors(String googleScholarURL) {
+    String matches = "";
+    int numberOfAuthors = 0;
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+
+      String reForCoAuthorExtraction = "<a class=\"cit-dark-link\" href=\"http://scholar.google.ca/citations(.)user=u8SjMZ0AAAAJ&hl=en\" title=\"Egon Willighagen\">Egon Willighagen</a>";
+      Pattern patternObject = Pattern.compile(reForCoAuthorExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      while (matcherObject.find()) {
+        matches = matcherObject.group(1);
+        numberOfAuthors++;
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+}

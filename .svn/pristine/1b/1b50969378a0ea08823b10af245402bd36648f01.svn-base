@@ -1,0 +1,180 @@
+//**********************************************************
+//Assignment3:
+//UTORID user_name: gerovac1
+//
+//Author: Jorden Gerovac
+//
+//
+//Honor Code: I pledge that this program represents my own
+//program code and that I have coded on my own. I received
+//help from no one in designing and debugging my program.
+//*********************************************************
+package driver;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Extractor {
+  public String extractAuthorsName(String googleScholarURL) {
+    String matches = "";
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+
+      String reForAuthorExtraction =
+          "<span id=\"cit-name-display\" "
+              + "class=\"cit-in-place-nohover\">(.*?)</span>";
+      Pattern patternObject = Pattern.compile(reForAuthorExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      while (matcherObject.find()) {
+         matches = matcherObject.group(1);
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+  
+  public String extractNumberOfCitations(String googleScholarURL) {
+    String matches = "";
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+
+      String reForCitationExtraction = "<td class=\"cit-borderleft cit-data\"" +
+      ">(.*?)</td>";
+      Pattern patternObject = Pattern.compile(reForCitationExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      if (matcherObject.find()) {
+        matches = matcherObject.group(1);
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+  
+  public String extractNumberOfi10Index(String googleScholarURL) {
+    String matches = "";
+    int count = 0;
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+
+      String reFori10Extraction = "<td class=\"cit-borderleft cit-data\"" + 
+      ">(.*?)</td>";
+      Pattern patternObject = Pattern.compile(reFori10Extraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      while (matcherObject.find()) {
+        if (count==5){
+          matches = matcherObject.group(1);
+        }
+        count++;
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+  
+  public String extractFirstThreePublications(String googleScholarURL) {
+    String matches = "";
+    int count = 1;
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+      String reForPublicationExtraction = "class=\"cit-dark-large-link\">"
+          + "(.*?)</a><br><span class=\"cit-gray\">";
+      Pattern patternObject = Pattern.compile(reForPublicationExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      while (matcherObject.find()) {
+        if (count<=3){
+          matches = matches + count + "- " + matcherObject.group(1);
+          if (count<3){
+            matches = matches + "\n     ";
+          }
+        }
+        count++;
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matches;
+   }
+  
+  public int extractTotalCitations(String googleScholarURL) {
+    String match = "";
+    int temp;
+    int citations = 0;
+    int count = 0;
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+      String reForCitationExtraction = "<a class=\"cit-dark-link\" " + 
+      "href=\"(.*?)\">([0-9]*?)</a></td>";
+      Pattern patternObject = Pattern.compile(reForCitationExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      while (matcherObject.find()) {
+        if (count<5){
+          match = matcherObject.group(2);
+          temp = Integer.parseInt(match);
+          citations += temp;
+          count++;
+        }
+      }
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return citations;
+   }
+  
+  public int extractCoAuthors(String googleScholarURL) {
+    ArrayList<String> matchList = new ArrayList<String>();
+    int numberOfAuthors = 0;
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+      String reForCoAuthorExtraction = "title=(.*?)>(.*?)</a><br><a class";
+      Pattern patternObject = Pattern.compile(reForCoAuthorExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      while (matcherObject.find()) {
+        matchList.add(matcherObject.group(1));
+        numberOfAuthors++;
+      }
+
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return numberOfAuthors;
+   }
+  
+  public ArrayList<String> extractCoAuthorList(String googleScholarURL){
+    ArrayList<String> matchList = new ArrayList<String>();
+    try {
+      HTML googleScholarParser = new HTML();
+      String rawHTMLString = googleScholarParser.getHTML(googleScholarURL);
+      String reForCoAuthorExtraction = "title=\"(.*?)\">(.*?)</a><br><";
+      Pattern patternObject = Pattern.compile(reForCoAuthorExtraction);
+      Matcher matcherObject = patternObject.matcher(rawHTMLString);
+      while (matcherObject.find()) {
+        matchList.add(matcherObject.group(2));
+      }
+      matchList.remove(matchList.size()-1);
+    } catch (Exception e) {
+      System.out.println("malformed URL or cannot open connection to "
+          + "given URL");
+    }
+    return matchList;
+   }
+}

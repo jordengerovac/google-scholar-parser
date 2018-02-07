@@ -1,0 +1,32 @@
+//**********************************************************
+//Assignment3:
+//UTORID user_name: gerovac1
+//
+//Author: Jorden Gerovac
+//
+//
+//Honor Code: I pledge that this program represents my own
+//program code and that I have coded on my own. I received
+//help from no one in designing and debugging my program.
+//*********************************************************
+package driver;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class FileOutput implements MyInterface {
+  public void consume() {
+    try{
+      Formatter f = new Formatter();
+      File outFile = new File(f.getOutputFile());
+      FileWriter fw = new FileWriter(outFile.getAbsoluteFile());
+      BufferedWriter bw = new BufferedWriter(fw);
+      bw.write(f.getFormat());
+      bw.close();
+    }
+    catch (IOException e) {
+      System.out.println();
+    }
+  }
+}

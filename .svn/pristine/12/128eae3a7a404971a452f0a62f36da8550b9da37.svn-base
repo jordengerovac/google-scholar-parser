@@ -1,0 +1,53 @@
+//**********************************************************
+//Assignment3:
+//UTORID user_name: gerovac1
+//
+//Author: Jorden Gerovac
+//
+//
+//Honor Code: I pledge that this program represents my own
+//program code and that I have coded on my own. I received
+//help from no one in designing and debugging my program.
+//*********************************************************
+package driver;
+
+public class Formatter {
+  public static String format;
+  public static String outputFile;
+  public static void main(String[] args){
+    // assigning the output file to a variable
+    outputFile = args[1];
+    // ConsoleOutput instance that will print out the format
+    ConsoleOutput c = new ConsoleOutput();
+    // FileOutput instance that will write the format to a file
+    FileOutput f = new FileOutput();
+    // Extractor instance that will obtain google scholar information
+    Extractor e = new Extractor();
+    String inputFiles[] = args[0].split(",");
+    // the String format
+    format = "1. Name of Author:\n"
+        + e.extractAuthorsName(inputFiles[0]) + "\n" 
+        + "2. Number of Citations:\n"
+        + e.extractNumberOfCitations(inputFiles[0]) + "\n" + 
+        "3. Number of i-10 index after 2009:\n" + 
+        e.extractNumberOfi10Index(inputFiles[0]) + "\n" +
+        "4. Title of the first three publications:\n" 
+        + e.extractFirstThreePublications(inputFiles[0]) + "\n" + 
+        "5. Total paper citation (first five papers):\n" + 
+        e.extractTotalCitations(inputFiles[0]) + "\n" + 
+        "6. Total Co-Authors:\n" + e.extractCoAuthors(inputFiles[0]) + "\n" + 
+        "7. Co-Author list sorted (total: number)";
+    // printing to console
+    c.consume();
+    // writing to file
+    f.consume();
+  }
+  // format getter method
+  public String getFormat(){
+    return format;
+  }
+  // output file getter method
+  public String getOutputFile(){
+    return outputFile;
+  }
+}

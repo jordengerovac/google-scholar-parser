@@ -1,0 +1,37 @@
+//**********************************************************
+//Assignment3:
+//UTORID user_name: gerovac1
+//
+//Author: Jorden Gerovac
+//
+//
+//Honor Code: I pledge that this program represents my own
+//program code and that I have coded on my own. I received
+//help from no one in designing and debugging my program.
+//*********************************************************
+package driver;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class FileOutput implements Output {
+  /**
+   * Takes the formatted String and prints to a file.
+   * 
+   * @throws IOException 
+   */
+  public void consume() {
+    try{
+      MyParser m = new MyParser();
+      Formatter f = new Formatter();
+      String fileName = m.getOutputFile();
+      // the true will append the new data
+      FileWriter fw = new FileWriter(fileName, true);
+      // appends the string to the file
+      fw.write(f.getFormat());
+      fw.close();
+    }
+    catch (IOException e) {
+      System.out.println("IOException: " + e.getMessage());
+    }
+  }
+}

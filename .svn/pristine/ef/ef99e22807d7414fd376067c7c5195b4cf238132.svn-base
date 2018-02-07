@@ -1,0 +1,23 @@
+package test;
+
+import static org.junit.Assert.*;
+
+import org.junit.*;
+
+import driver.MyParser;
+
+public class MyParserTest {
+  MyParser m;
+
+  @Before
+  public void setUp(){
+    m = new MyParser();
+    MyParser.outputFile = "outfile1.txt";
+  }
+  
+  @Test
+  public void outputFileTest() {
+    assertEquals(MyParser.outputFile, m.getOutputFile());
+  }
+
+}
