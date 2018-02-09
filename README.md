@@ -1,2 +1,2 @@
 # google-scholar-parser
-Java program that parses html from local google scholar html file and neatly displays information pertaining to the authors
+Java program that parses html from local html files and neatly displays information pertaining to google scholar authors
